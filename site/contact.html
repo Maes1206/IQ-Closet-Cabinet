@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  <title>IQ Contact Us</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="icon" href="images/fevicon.png" type="image/gif" />
+  <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css" />
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen" />
+
+  <!-- Toast simple (no mueve el layout) -->
+  <style>
+    .toast{
+      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+      background:#111; color:#fff; padding:12px 18px; border-radius:10px;
+      font-size:14px; opacity:0; pointer-events:none; transition:opacity .35s ease;
+      z-index: 9999;
+    }
+    .toast.show{ opacity:1; }
+  </style>
+
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body class="main-layout in_page">
+  <!-- loader  -->
+  <div class="loader_bg">
+    <div class="loader"><img src="images/loading.gif" alt="Loading..." /></div>
+  </div>
+
+  <!-- header -->
+  <header>
+    <div class="header">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-12 col-sm-3 col logo_section">
+            <div class="full">
+              <div class="center-desk">
+                <div class="logo">
+                  <a href="index.html"><img src="images/logo.png" alt="IQ Closets & Cabinets" /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-10 offset-md-1">
+            <nav class="navigation navbar navbar-expand-md navbar-dark">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
+                aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarsExample04">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                  <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                  <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                  <li class="nav-item"><a class="nav-link" href="testimonial.html">Testimonial</a></li>
+                  <li class="nav-item active"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- end header -->
+
+  <!-- contact -->
+  <div class="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="titlepage">
+            <h2>Contact Us</h2>
+          </div>
+        </div>
+      </div>
+
+      <!-- MISMA FILA: formulario (6) + mapa (6) -->
+      <div class="row">
+        <!-- Form -->
+        <div class="col-md-6">
+          <form id="request" class="main_form" 
+                action="https://0256887d.sibforms.com/serve/MUIFAPuJmv3b4DDzEbIQufUM0G_n8okY8EmzAz9Ru_0FapDbh0EQ8QVF0cclDd3YLU7IwCtmg7ptxqvnb-VV1wySyZ2YKmjuKbrAN1FGoAyAWl0Y4H-ws-iZ5_zHZFQchwAoZ4LT-TQkCsFLn_1nGKj_djoRznLvfPZ_17hbfIj1ndCHOxMddfGCnRAHjeTn0LiwVt7Ij0zjlS0M" 
+                method="POST" novalidate>
+                <div class="col-md-12">
+  <div id="form-status" class="form-msg ok" role="alert" style="display:none;">
+    message sent successfully!
+  </div>
+  <div id="form-status-error" class="form-msg error" role="alert" style="display:none;">
+    Hubo un problema al enviar. Intenta de nuevo.
+  </div>
+</div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <input class="contactus" placeholder="Name" type="text" name="NOMBRE" autocomplete="name" required />
+              </div>
+              <div class="col-md-12">
+                <input class="contactus" placeholder="Last Name" type="text" name="APELLIDOS" autocomplete="family-name" />
+              </div>
+              <div class="col-md-12">
+                <input class="contactus" placeholder="Email" type="email" name="EMAIL" autocomplete="email" required />
+              </div>
+              <div class="col-md-12">
+                <input class="contactus" placeholder="Phone Number" type="tel" name="SMS" autocomplete="tel" />
+                <input type="hidden" name="SMS__COUNTRY_CODE" id="sms_code" value="+57">
+              </div>
+              <div class="col-md-12">
+                <!-- Guardamos el mensaje en Job Title (limitación plan free) -->
+                <textarea class="textarea" placeholder="Message" name="JOB_TITLE" rows="4" required></textarea>
+              </div>
+              <div class="col-md-12">
+                <button type="submit" class="send_btn">Send</button>
+              </div>
+            </div>
+
+            <!-- Campos ocultos de Brevo -->
+            <input type="text" name="email_address_check" value="" class="input--hidden" style="display:none !important;">
+            <input type="hidden" name="locale" value="es">
+            <input type="hidden" name="html_type" value="simple">
+          </form>
+        </div>
+
+        <!-- Map -->
+        <div class="col-md-6">
+          <div class="map_main">
+            <div class="map-responsive">
+              <iframe
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&amp;q=28 otis St, west Babylon Ny 11704"
+                width="600" height="345" frameborder="0" style="border:0; width:100%;" allowfullscreen=""
+                title="Location Map">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /row principal -->
+
+    </div>
+  </div>
+  <!-- end contact -->
+
+  <!-- footer -->
+  <footer>
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+
+          <!-- Social Media -->
+          <div class="col-md-3 col-sm-6">
+            <ul class="social_icon">
+              <li><a href="https://www.tiktok.com/@yourusername" target="_blank" rel="noopener"><i class="fa fa-magic" aria-hidden="true"></i><span class="sr-only">TikTok</span></a></li>
+              <li><a href="https://www.instagram.com/yourusername" target="_blank" rel="noopener"><i class="fa fa-instagram" aria-hidden="true"></i><span class="sr-only">Instagram</span></a></li>
+              <li><a href="https://wa.me/1234567890" target="_blank" rel="noopener"><i class="fa fa-whatsapp" aria-hidden="true"></i><span class="sr-only">WhatsApp</span></a></li>
+            </ul>
+            <p class="variat pad_roght2">
+              Stay connected with us on all our social platforms. Follow us to discover the latest updates!
+            </p>
+          </div>
+
+          <!-- Help -->
+          <div class="col-md-3 col-sm-6">
+            <h3>LET US HELP YOU</h3>
+            <p class="variat pad_roght2">
+              Personalized attention and support for all our clients. We are here to assist you every step of the way.
+            </p>
+          </div>
+
+          <!-- Information / Menu -->
+          <div class="col-md-3 col-sm-6">
+            <h3>INFORMATION</h3>
+            <ul class="link_menu">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="gallery.html">Gallery</a></li>
+              <li><a href="testimonial.html">Testimonials</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+          </div>
+
+          <!-- Design -->
+          <div class="col-md-3 col-sm-6">
+            <h3>OUR DESIGN</h3>
+            <p class="variat">
+              We create functional, modern, and stylish spaces tailored to your lifestyle. Let us design with you!
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="copyright">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-10 offset-md-1">
+              <p>© 2025 All Rights Reserved. Designed by
+                <a href="https://www.instagram.com/elviejomaes/" target="_blank" rel="noopener noreferrer">@Elviejomaes</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+  <!-- end footer -->
+  <!-- WhatsApp Floating Button -->
+  <a id="wa-float"
+     href="https://wa.me/15165302643?text=I%20would%20like%20to%20Quote%3A"
+     target="_blank" rel="noopener"
+     aria-label="Chat on WhatsApp"
+     style="
+       position:fixed !important;
+       right:18px !important;
+       bottom:22px !important;
+       width:56px !important; height:56px !important;
+       background:#25D366 !important; color:#fff !important;
+       border-radius:999px !important;
+       display:inline-flex !important; align-items:center !important; justify-content:center !important;
+       text-decoration:none !important;
+       box-shadow:0 10px 20px rgba(0,0,0,.18) !important;
+       z-index:999999 !important;
+     ">
+    <svg viewBox="0 0 32 32" aria-hidden="true" style="width:28px;height:28px;display:block;">
+      <path d="M19.11 17.27c-.28-.14-1.63-.8-1.88-.89-.25-.09-.43-.14-.61.14-.18.28-.7.88-.86 1.06-.16.18-.32.2-.6.07-.28-.14-1.18-.43-2.24-1.38-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.44.12-.58.12-.12.28-.32.42-.48.14-.16.18-.28.28-.47.09-.18.05-.35-.02-.49-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47-.16-.01-.35-.01-.53-.01-.18 0-.49.07-.75.35-.25.28-.97.95-.97 2.31s1 2.68 1.14 2.86c.14.18 1.96 3 4.75 4.23.66.28 1.18.45 1.58.58.66.21 1.26.18 1.73.11.53-.08 1.63-.67 1.86-1.32.23-.65.23-1.21.16-1.32-.07-.11-.25-.18-.53-.32zM16.03 28c-2.06 0-4.06-.55-5.83-1.59l-4.06 1.29 1.33-3.96C5.31 21.86 4.77 19.89 4.77 18 4.77 11.95 9.98 7 16.03 7c5.04 0 9.2 3.77 9.2 8.82 0 5.05-4.16 12.18-9.2 12.18z" fill="currentColor"></path>
+    </svg>
+    <span class="wa-label" style="
+        position:absolute; right:66px; white-space:nowrap;
+        background:#1f2937; color:#fff; padding:10px 12px; border-radius:10px;
+        box-shadow:0 8px 18px rgba(0,0,0,.18);
+        opacity:0; pointer-events:none; transform:translateX(6px);
+        transition:opacity .18s ease, transform .18s ease;
+      ">Quote Right Now:</span>
+  </a>
+
+  <!-- Aviso (hint) -->
+  <div id="wa-hint" role="dialog" aria-live="polite" aria-hidden="true">
+    <button type="button" id="wa-hint-close" aria-label="Close notice">×</button>
+    <strong>Need a quote? Tap the WhatsApp button</strong><br>
+    <span>The best customized designs to optimize spaces and beautify interiors.</span>
+    <div class="wa-hint-sub">Closet & Cabinet Company</div>
+  </div>
+
+  <style>
+    /* Estilo del aviso */
+    #wa-hint{
+      position: fixed;
+      right: 110px;
+      bottom: 30px;
+      max-width: 280px;
+      background: #111827;
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.25);
+      font: 500 14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      z-index: 1000000;
+      opacity: 0;
+      transform: translateX(8px) translateY(8px) scale(.98);
+      pointer-events: none;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    #wa-hint.show{ opacity:1; transform: translateX(0) translateY(0) scale(1); pointer-events:auto; }
+    #wa-hint::after{
+      content:""; position:absolute; right:-8px; bottom:16px;
+      border:8px solid transparent; border-left-color:#111827;
+    }
+    #wa-hint #wa-hint-close{
+      position:absolute; top:6px; right:8px; width:22px; height:22px; line-height:18px;
+      border:0; border-radius:999px; background:#1f2937; color:#fff; cursor:pointer; font-size:16px;
+    }
+    #wa-hint #wa-hint-close:hover{ background:#374151; }
+    #wa-hint .wa-hint-sub{ opacity:.85; font-weight:400; margin-top:6px; }
+    @media (max-width:480px){
+      #wa-hint{ right:16px; bottom:100px; max-width:88vw; }
+      #wa-hint::after{ display:none; }
+    }
+  </style>
+
+  <!-- Hint logic (muestra cada recarga) -->
+  <script>
+    (function(){
+      const hint = document.getElementById('wa-hint');
+      const btn  = document.getElementById('wa-float');
+      const x    = document.getElementById('wa-hint-close');
+      if (!hint || !btn) return;
+
+      const delayMs = 5000;     // aparece a los 5s
+      const autoHideMs = 10000; // autocierra a los 10s
+      let autoHideTimer;
+
+      function showHint(){
+        hint.classList.add('show');
+        hint.setAttribute('aria-hidden','false');
+        autoHideTimer = setTimeout(hideHint, autoHideMs);
+      }
+      function hideHint(){
+        hint.classList.remove('show');
+        hint.setAttribute('aria-hidden','true');
+        clearTimeout(autoHideTimer);
+      }
+
+      setTimeout(showHint, delayMs);
+      x.addEventListener('click', hideHint);
+      btn.addEventListener('mouseenter', hideHint);
+      btn.addEventListener('click', hideHint);
+    })();
+  </script>
+
+  <!-- JS -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+  <script src="js/custom.js"></script>
+
+  <!-- Lógica opcional para newsletter en footer (protegida) -->
+  <script>
+    (function(){
+      var form = document.getElementById("subscribeForm");
+      var emailField = document.getElementById("email");
+      var msg = document.getElementById("successMessageFooter");
+      if(form && emailField && msg){
+        form.addEventListener("submit", function(e){
+          e.preventDefault();
+          if (emailField.checkValidity()){
+            msg.style.display = "block";
+            emailField.value = "";
+          } else {
+            msg.style.display = "none";
+            alert("Please enter a valid email address.");
+          }
+        });
+      }
+    })();
+  </script>
+
+  <script>
+(function(){
+  const form  = document.getElementById('request');
+  const toast = document.getElementById('toast');
+  if(!form || !toast) return;
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(form);
+    try {
+      // Enviamos a Brevo; no leemos la respuesta (CORS)
+      await fetch(form.action, { method:'POST', body: fd, mode:'no-cors' });
+      toast.textContent = '¡Gracias! Recibimos tu mensaje.';
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'), 4000);
+      form.reset();
+    } catch (err) {
+      alert('Hubo un problema al enviar. Intenta de nuevo.');
+    }
+  });
+})();
+</script>
+<script>
+(function(){
+  const form  = document.getElementById('request');
+  const phone = form.querySelector('input[name="SMS"]');
+  let codeEl  = form.querySelector('#sms_code');
+  const toast = document.getElementById('toast');
+
+  function showToast(text){
+    if(!toast) return;
+    toast.textContent = text;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'), 3500);
+  }
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    // Normaliza teléfono: si empieza con +, extrae prefijo y número
+    let raw = (phone.value || '').trim();
+    if (raw.startsWith('+')) {
+      const m = raw.match(/^\+(\d{1,3})\s*(.*)$/);
+      if (m) {
+        const pref = '+' + m[1];
+        const rest = (m[2] || '').replace(/\D/g,'');
+        codeEl.value = pref;
+        phone.value  = rest;
+      }
+    }
+
+    // Si el usuario NO escribió teléfono, quita el campo de código (evita validación innecesaria)
+    if (!phone.value) {
+      if (codeEl) codeEl.remove();
+    }
+
+    try {
+      // Enviamos a Brevo sin navegar (no podemos leer la respuesta por CORS, pero se entrega)
+      await fetch(form.action, { method:'POST', body: new FormData(form), mode:'no-cors' });
+      showToast('¡Gracias! Recibimos tu mensaje.');
+      form.reset();
+      // vuelve a crear el hidden si lo quitamos
+      if (!document.getElementById('sms_code')) {
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'SMS__COUNTRY_CODE';
+        hidden.id   = 'sms_code';
+        hidden.value = '+57';
+        form.appendChild(hidden);
+      }
+    } catch (err) {
+      showToast('Intento de envío realizado. Si ves problemas, verifica conexión.');
+    }
+  });
+})();
+</script>
+<script>
+(function(){
+  const form   = document.getElementById('request');
+  if(!form) return;
+
+  const phone  = form.querySelector('input[name="SMS"]');
+  let   codeEl = form.querySelector('#sms_code'); // hidden +57
+  const okBox  = document.getElementById('form-status');
+  const errBox = document.getElementById('form-status-error');
+  const btn    = form.querySelector('.send_btn');
+
+  // crea el hidden si no existe
+  if(!codeEl){
+    codeEl = document.createElement('input');
+    codeEl.type = 'hidden';
+    codeEl.name = 'SMS__COUNTRY_CODE';
+    codeEl.id   = 'sms_code';
+    codeEl.value = '+57';
+    form.appendChild(codeEl);
+  }
+
+  function show(el){ if(el){ el.style.display='block'; } }
+  function hide(el){ if(el){ el.style.display='none'; } }
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    hide(okBox); hide(errBox);
+
+    // Normaliza teléfono: "+57 300..." -> code + número
+    if (phone && phone.value.trim().startsWith('+')) {
+      const m = phone.value.trim().match(/^\+(\d{1,3})\s*(.*)$/);
+      if (m) {
+        codeEl.value = '+' + m[1];
+        phone.value  = (m[2] || '').replace(/\D/g,'');
+      }
+    }
+    // Si no hay teléfono, quita el code para que Brevo no lo valide
+    let removedCode = false;
+    if (phone && !phone.value.trim()) {
+      codeEl.remove();
+      removedCode = true;
+    }
+
+    // Feedback botón
+    const oldText = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending…';
+
+    try {
+      await fetch(form.action, { method:'POST', body:new FormData(form), mode:'no-cors' });
+      form.reset();
+      show(okBox);             // ¡Mensaje enviado!
+      setTimeout(()=>hide(okBox), 5000);
+    } catch (err){
+      show(errBox);
+      setTimeout(()=>hide(errBox), 6000);
+    } finally {
+      btn.disabled = false; btn.textContent = oldText;
+      // repone el hidden si se quitó
+      if (removedCode) {
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'SMS__COUNTRY_CODE';
+        hidden.id   = 'sms_code';
+        hidden.value = '+57';
+        form.appendChild(hidden);
+      }
+    }
+  });
+})();
+</script>
+
+  <!-- Toast container -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
