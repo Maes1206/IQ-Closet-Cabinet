@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Asistente IA — Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Estilos solo si va embebido en iframe -->
+  <style id="embed-hide" disabled>
+    .chat-header, .ia-header, #chat-toggle, .chat-bubble, #fab, .chat-fab { display: none !important; }
+    .chat-panel, .chat-container, .chat-wrapper { box-shadow: none !important; border-radius: 0 !important; height: 100% !important; }
+    html, body { background: transparent !important; }
+  </style>
+
+  <style>
+    :root { --radius: 16px; --shadow: 0 8px 30px rgba(0,0,0,.15); }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial; background:#f7f7f8; }
+    .chat-fab { position:fixed; left:20px; bottom:20px; width:56px; height:56px; border-radius:50%; border:none; cursor:pointer; box-shadow:var(--shadow); background:#111; color:#fff; font-size:22px; display:flex; align-items:center; justify-content:center; z-index:9999; }
+    .chat-panel { position:fixed; left:20px; bottom:88px; width:360px; max-width:calc(100vw - 40px); height:520px; max-height:calc(100vh - 140px); background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); display:none; flex-direction:column; overflow:hidden; border:1px solid #e8e8ee; z-index:9998; }
+    .chat-panel.open { display:flex; }
+    .chat-header { background:#111; color:#fff; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; }
+    .chat-messages { flex:1; padding:12px; overflow-y:auto; background:#fafafb; }
+    .msg { display:flex; gap:10px; margin-bottom:12px; }
+    .msg .bubble { padding:10px 12px; border-radius:12px; max-width:85%; line-height:1.35; white-space:pre-wrap; word-wrap:break-word; }
+    .msg.user { justify-content:flex-end; }
+    .msg.user .bubble { background:#111; color:#fff; border-bottom-right-radius:4px; }
+    .msg.bot .bubble { background:#fff; border:1px solid #e9e9ef; border-bottom-left-radius:4px; }
+    .chat-input { border-top:1px solid #eee; padding:10px; display:flex; gap:8px; background:#fff; }
+    .chat-input textarea { flex:1; resize:none; height:44px; padding:10px; border-radius:10px; border:1px solid #ddd; font:inherit; }
+    .chat-input button { padding:0 14px; background:#111; color:#fff; border:none; border-radius:10px; cursor:pointer; height:44px; }
+    .typing { font-size:12px; color:#666; margin:4px 0 10px 2px; }
+  </style>
+</head>
+<body>
+
+<button class="chat-fab" id="fab" title="Abrir chat">💬</button>
+
+<div class="chat-panel" id="panel">
+  <div class="chat-header">
+    <h3>Asistente IA</h3>
+    <button id="close" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="chat-messages" id="messages" aria-live="polite"></div>
+
+  <div class="chat-input">
+    <textarea id="input" placeholder="Escribe tu mensaje…"></textarea>
+    <button id="send">Enviar</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Modo embebido
+  const params  = new URLSearchParams(location.search);
+  const isEmbed = params.get('embed') === '1' || (window.self !== window.top);
+  if (isEmbed) {
+    document.getElementById('embed-hide').disabled = false;
+    document.getElementById('panel')?.classList.add('open');
+    document.getElementById('fab')?.style.setProperty('display','none');
+  }
+
+  // ✅ URL pública del BACKEND (ngrok) SIN slash final
+  const BACKEND_URL = ""
+
+  // Elementos
+  const fab = document.getElementById('fab');
+  const panel = document.getElementById('panel');
+  const closeBtn = document.getElementById('close');
+  const messagesEl = document.getElementById('messages');
+  const inputEl = document.getElementById('input');
+  const sendBtn = document.getElementById('send');
+
+  let history = [];
+  let typingEl = null;
+
+  const scrollToBottom = () => { messagesEl.scrollTop = messagesEl.scrollHeight; };
+
+  const addMsg = (role, text) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+    wrap.appendChild(bubble);
+    messagesEl.appendChild(wrap);
+    scrollToBottom();
+  };
+
+  const showTyping = () => {
+    if (typingEl) return;
+    typingEl = document.createElement('div');
+    typingEl.className = 'typing';
+    typingEl.textContent = 'Escribiendo…';
+    messagesEl.appendChild(typingEl);
+    scrollToBottom();
+  };
+  const hideTyping = () => { if (typingEl) { typingEl.remove(); typingEl = null; } };
+
+  fab.onclick = () => { panel.classList.add('open'); setTimeout(() => inputEl.focus(), 0); };
+  closeBtn.onclick = () => { panel.classList.remove('open'); };
+
+  async function send() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+
+    inputEl.value = '';
+    addMsg('user', text);
+    showTyping();
+    sendBtn.disabled = true;
+
+    try {
+  const ping = await fetch(`${BACKEND_URL}/api/ping`, { method: "GET" });
+  console.log("PING /api/ping ->", ping.status, await ping.text());
+} catch (e) {
+  console.error("PING FALLÓ:", e);
+}
+
+    try {
+      // 👉 Si tu endpoint es /chat, cambia a `${BACKEND_URL}/chat`
+      const res = await fetch(`${BACKEND_URL}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history }),
+      });
+
+      if (!res.ok) {
+        hideTyping();
+        let detail = '';
+        try { const errJson = await res.json(); detail = errJson?.detail ? ` — ${errJson.detail}` : ''; } catch {}
+        addMsg('bot', `⚠️ Error HTTP ${res.status}${detail}`);
+        return;
+      }
+
+      const data = await res.json();
+      hideTyping();
+
+      if (data && data.ok) {
+        addMsg('bot', data.reply || '(sin respuesta)');
+        history.push({ role: 'user', content: text });
+        history.push({ role: 'assistant', content: data.reply || '' });
+        if (history.length > 40) history = history.slice(-40);
+      } else {
+        addMsg('bot', '⚠️ Respuesta inválida del servidor.');
+      }
+    } catch (err) {
+      hideTyping();
+      addMsg('bot', '⚠️ Error de red: ' + (err?.message || err));
+      console.error(err);
+    } finally {
+      sendBtn.disabled = false;
+      inputEl.focus();
+    }
+  }
+
+  sendBtn.onclick = send;
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+})();
+</script>
+</body>
+</html>
